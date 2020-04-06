@@ -54,6 +54,16 @@ public class ElevensBoard extends Board {
 	@Override
 	public boolean isLegal(List<Integer> selectedCards) {
 		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
+		if(selectedCards.size() < 2){
+			return false;
+		}
+		else if(selectedCards.size() == 2 && containsPairSum11(selectedCards)){
+			return true;
+		}
+		else if(selectedCards.size() == 3 && containsJQK(selectedCards)){
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -67,6 +77,10 @@ public class ElevensBoard extends Board {
 	@Override
 	public boolean anotherPlayIsPossible() {
 		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
+		if(containsPairSum11(cardIndexes()) || containsJQK(cardIndexes())){
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -79,6 +93,17 @@ public class ElevensBoard extends Board {
 	 */
 	private boolean containsPairSum11(List<Integer> selectedCards) {
 		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
+		if(selectedCards.size() < 2){
+			return false;
+		}
+		for(int i = 0; i < selectedCards.size() -1; i++){
+			for(int k = i + 1; k < selectedCards.size(); k++){
+				if(cardAt(selectedCards.get(i)).pointValue() + cardAt(selectedCards.get(k)).pointValue() == 11){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -91,5 +116,23 @@ public class ElevensBoard extends Board {
 	 */
 	private boolean containsJQK(List<Integer> selectedCards) {
 		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
+		if(cardAt(selectedCards.get(0)).pointValue() != 0 || cardAt(selectedCards.get(1)).pointValue() != 0 || cardAt(selectedCards.get(2)).pointValue() != 0 || selectedCards.size() < 3){
+			return false;
+		}
+		boolean king = false;
+		boolean queen = false;
+		boolean jack = false;
+		for(int i = 0; i < selectedCards.size(); i++){
+			if(cardAt(selectedCards.get(i)).rank().equals("jack")){
+				jack = true;
+			}
+			if(cardAt(selectedCards.get(i)).rank().equals("queen")){
+				queen = true;
+			}
+			if(cardAt(selectedCards.get(i)).rank().equals("king")){
+				king = true;
+			}
+		}
+		return king && queen && jack;
 	}
 }
